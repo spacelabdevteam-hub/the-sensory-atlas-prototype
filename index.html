@@ -148,9 +148,16 @@
 
     .sub-links {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 6px;
       margin-top: 14px;
       font-size: 12px;
+    }
+
+    .sub-links-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .sub-links a {
@@ -234,8 +241,14 @@
     </a>
 
     <div class="sub-links">
-      <a href="https://spacejourney.app/en/itinerary-planner/" target="_blank">Itinerary Planner</a>
-      <a href="https://spacejourney.app/en/ai-journey-assistant/" target="_blank">Sensory Copilot (AI)</a>
+      <div class="sub-links-row">
+        <a href="https://spacejourney.app/en/itinerary-planner/" target="_blank">Itinerary Planner</a>
+        <a href="https://spacejourney.app/en/ai-journey-assistant/" target="_blank">Sensory Copilot (AI)</a>
+      </div>
+      <div class="sub-links-row">
+        <a href="https://spacejourney.app/en/travel-extension-chrome-safari/" target="_blank">Trip Saver Extension</a>
+        <a href="https://concierge.spacelab.network/concierge-ai-hub" target="_blank" style="color: #34D399; font-weight: 600;">Concierge AI Hub ↗</a>
+      </div>
     </div>
   </aside>
 
