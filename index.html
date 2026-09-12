@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Sensory Atlas — 3D Spatial Prototype | Space Journey</title>
+  <meta name="description" content="Open-source isometric 3D spatial exploration prototype for Space Journey. Mindful urban exploration, acoustic refuges, and sensory well-being.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #061212;
+      --solar-gold: #F59E0B;
+      --emerald-zenith: #10B981;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --glass-bg: rgba(6, 18, 18, 0.78);
+      --glass-border: rgba(16, 185, 129, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      font-family: 'Outfit', sans-serif;
+      color: var(--text-main);
+    }
+
+    #webgl-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Floating Solarpunk HUD */
+    .hud-overlay {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      z-index: 10;
+      max-width: 380px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hud-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .hud-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--bg-dark);
+      background: var(--solar-gold);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .hud-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .hud-desc {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 10px;
+      padding: 12px 8px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .metric-item {
+      text-align: center;
+    }
+
+    .metric-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--emerald-zenith);
+    }
+
+    .metric-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .cta-button {
+      display: block;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--emerald-zenith) 0%, #059669 100%);
+      color: #FFFFFF;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+      background: linear-gradient(135deg, #34D399 0%, #10B981 100%);
+    }
+
+    .sub-links {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 14px;
+      font-size: 12px;
+    }
+
+    .sub-links a {
+      color: var(--solar-gold);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .sub-links a:hover {
+      text-decoration: underline;
+      color: #FBBF24;
+    }
+
+    /* Controls Hint */
+    .controls-hint {
+      position: absolute;
+      bottom: 20px;
+      right: 24px;
+      z-index: 10;
+      background: rgba(6, 18, 18, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 12px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .hud-overlay {
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        max-width: none;
+      }
+      .controls-hint {
+        display: none;
+      }
+    }
+  </style>
+
+  <!-- Three.js & OrbitControls from fast CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+  <canvas id="webgl-canvas"></canvas>
+
+  <aside class="hud-overlay">
+    <div class="hud-brand">
+      <span class="hud-badge">Solarpunk 3D</span>
+      <span style="font-size: 11px; color: var(--text-muted);">Space Journey Lab</span>
+    </div>
+    <h1 class="hud-title">The Sensory Atlas: Rome Pilot</h1>
+    <p class="hud-desc">Isometric architectural prototype visualizing acoustic tranquility refuges and crowd-free golden hour lighting.</p>
+    
+    <div class="metrics-grid">
+      <div class="metric-item">
+        <div class="metric-value">42 dB</div>
+        <div class="metric-label">Acoustic</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">94/100</div>
+        <div class="metric-label">SIS Score</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value">17:45</div>
+        <div class="metric-label">Golden Hour</div>
+      </div>
+    </div>
+
+    <a href="https://spacejourney.app/play/roma-atlas/" target="_blank" rel="noopener noreferrer" class="cta-button">
+      Explore Live Interactive Map ↗
+    </a>
+
+    <div class="sub-links">
+      <a href="https://spacejourney.app/en/itinerary-planner/" target="_blank">Itinerary Planner</a>
+      <a href="https://spacejourney.app/en/ai-journey-assistant/" target="_blank">Sensory Copilot (AI)</a>
+    </div>
+  </aside>
+
+  <div class="controls-hint">
+    🖱️ Drag to rotate • Scroll to zoom • Right-click to pan
+  </div>
+
+  <script>
+    // --- THREE.JS SCENE SETUP ---
+    const canvas = document.getElementById('webgl-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x061212);
+    scene.fog = new THREE.FogExp2(0x061212, 0.035);
+
+    // Camera: Isometric perspective
+    const aspect = window.innerWidth / window.innerHeight;
+    const camera = new THREE.PerspectiveCamera(40, aspect, 0.1, 100);
+    camera.position.set(16, 14, 16);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.maxPolarAngle = Math.PI / 2.1;
+    controls.minDistance = 8;
+    controls.maxDistance = 35;
+    controls.target.set(0, 2, 0);
+
+    // --- LIGHTING ---
+    const ambientLight = new THREE.AmbientLight(0x1a3333, 1.2);
+    scene.add(ambientLight);
+
+    // Solar Golden Sun Light
+    const sunLight = new THREE.DirectionalLight(0xF59E0B, 2.2);
+    sunLight.position.set(12, 18, 8);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.width = 1024;
+    sunLight.shadow.mapSize.height = 1024;
+    scene.add(sunLight);
+
+    // Emerald Fill Light
+    const fillLight = new THREE.PointLight(0x10B981, 2.0, 20);
+    fillLight.position.set(-6, 4, -6);
+    scene.add(fillLight);
+
+    // --- PROCEDURAL SOLARPUNK MONUMENT (ROMAN REFUGE) ---
+    const monumentGroup = new THREE.Group();
+
+    // 1. Terraced Stone Base (Pedestal)
+    const baseMat = new THREE.MeshStandardMaterial({
+      color: 0x0D1F1F,
+      roughness: 0.8,
+      metalness: 0.2
+    });
+
+    const base1 = new THREE.Mesh(new THREE.BoxGeometry(10, 0.6, 10), baseMat);
+    base1.position.y = 0.3;
+    base1.receiveShadow = true;
+    monumentGroup.add(base1);
+
+    const base2 = new THREE.Mesh(new THREE.BoxGeometry(8, 0.6, 8), baseMat);
+    base2.position.y = 0.9;
+    base2.receiveShadow = true;
+    monumentGroup.add(base2);
+
+    // 2. Classical Columns
+    const columnMat = new THREE.MeshStandardMaterial({
+      color: 0xE2E8F0,
+      roughness: 0.5,
+      metalness: 0.1
+    });
+
+    const columnGeo = new THREE.CylinderGeometry(0.3, 0.35, 4, 16);
+    const colPositions = [
+      [-2.8, -2.8], [2.8, -2.8], [-2.8, 2.8], [2.8, 2.8],
+      [0, -2.8], [0, 2.8], [-2.8, 0], [2.8, 0]
+    ];
+
+    colPositions.forEach(([x, z]) => {
+      const col = new THREE.Mesh(columnGeo, columnMat);
+      col.position.set(x, 3.2, z);
+      col.castShadow = true;
+      col.receiveShadow = true;
+      monumentGroup.add(col);
+    });
+
+    // 3. Classical Roof Architrave
+    const roofMat = new THREE.MeshStandardMaterial({
+      color: 0xCBD5E1,
+      roughness: 0.4
+    });
+    const roof = new THREE.Mesh(new THREE.BoxGeometry(7, 0.5, 7), roofMat);
+    roof.position.y = 5.45;
+    roof.castShadow = true;
+    monumentGroup.add(roof);
+
+    // 4. Solarpunk Energy Crystal (Golden SIS Core)
+    const crystalGeo = new THREE.OctahedronGeometry(1.2, 0);
+    const crystalMat = new THREE.MeshStandardMaterial({
+      color: 0xF59E0B,
+      emissive: 0xF59E0B,
+      emissiveIntensity: 0.6,
+      roughness: 0.1,
+      metalness: 0.8
+    });
+    const crystal = new THREE.Mesh(crystalGeo, crystalMat);
+    crystal.position.y = 3.2;
+    crystal.castShadow = true;
+    monumentGroup.add(crystal);
+
+    // 5. Bio-rings (Acoustic ripples)
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: 0x10B981,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.4
+    });
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(3.5, 0.05, 8, 32), ringMat);
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = 3.2;
+    monumentGroup.add(ring);
+
+    scene.add(monumentGroup);
+
+    // --- PROCEDURAL GROUND GRID ---
+    const grid = new THREE.GridHelper(40, 40, 0x10B981, 0x0B2626);
+    grid.position.y = 0.01;
+    scene.add(grid);
+
+    // --- ANIMATION LOOP ---
+    let clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const elapsedTime = clock.getElapsedTime();
+
+      // Gentle continuous rotation
+      monumentGroup.rotation.y = elapsedTime * 0.08;
+      crystal.rotation.y = elapsedTime * 0.4;
+      crystal.rotation.x = Math.sin(elapsedTime * 0.5) * 0.2;
+      crystal.position.y = 3.2 + Math.sin(elapsedTime * 1.5) * 0.2;
+
+      // Pulse ring
+      ring.scale.setScalar(1 + Math.sin(elapsedTime * 2) * 0.05);
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // --- RESIZE HANDLER ---
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
