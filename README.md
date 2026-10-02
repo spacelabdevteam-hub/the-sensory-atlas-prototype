@@ -2,6 +2,8 @@
 
 [![Three.js](https://img.shields.io/badge/Three.js-r160-black?logo=three.js)](https://threejs.org/)
 [![WebGL](https://img.shields.io/badge/WebGL-2.0-red)](https://www.khronos.org/webgl/)
+[![Hugging Face](https://img.shields.io/badge/🤗%20Hugging%20Face-Sensory%20Datasets-yellow)](https://huggingface.co/datasets/spacejourney/rome-sensory-impact-dataset)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22756473.svg)](https://doi.org/10.5281/zenodo.22756473)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-blue)](https://spacelabdevteam-hub.github.io/the-sensory-atlas-prototype/)
 
@@ -17,9 +19,27 @@ Explore the active modules running in production:
 
 * **[Live 3D Sensory Atlas (Rome Pilot)](https://spacejourney.app/play/roma-atlas/)** — Interactive isometric viewer exploring acoustic refuges in Rome.
 * **[Roman Forum Viewer](https://spacejourney.app/play/foro-romano/)** — Spatial reconstruction prototype with real-time camera controls.
-* **[Sensory Itinerary Planner](https://spacejourney.app/en/itinerary-planner/)** — Algorithmic route planning based on physical fatigue and sensory noise limits *(also in [Español](https://spacejourney.app/planificador-de-viajes/) & [Português](https://spacejourney.app/pt-br/planejador-de-viagens/))*.
-* **[AI Journey Assistant & Sensory Copilot](https://spacejourney.app/en/ai-journey-assistant/)** — Conversational AI guide for mindful itineraries and crowd avoidance *(also in [Español](https://spacejourney.app/ai-journey-assistant/) & [Português](https://spacejourney.app/pt-br/ai-journey-assistant/))*.
-* **[Space Journey Trip Saver Extension](https://spacejourney.app/en/travel-extension-chrome-safari/)** — Save stays, tours, and web inspiration into structured sensory itineraries *(also in [Español](https://spacejourney.app/extension-viajes-chrome-safari/) & [Português](https://spacejourney.app/pt-br/extensao-de-viagem-chrome-safari/))*.
+* **[Sensory Itinerary Planner](https://spacejourney.app/en/itinerary-planner/)** — Algorithmic route planning based on physical fatigue and sensory noise limits *(also in [Español](https://spacejourney.app/planificador-de-viajes/) & [Português](https://spacejourney.app/pt-br/planejador-de-viagens/))* .
+* **[AI Journey Assistant & Sensory Copilot](https://spacejourney.app/en/ai-journey-assistant/)** — Conversational AI guide for mindful itineraries and crowd avoidance *(also in [Español](https://spacejourney.app/ai-journey-assistant/) & [Português](https://spacejourney.app/pt-br/ai-journey-assistant/))* .
+* **[Space Journey Trip Saver Extension](https://spacejourney.app/en/travel-extension-chrome-safari/)** — Save stays, tours, and web inspiration into structured sensory itineraries *(also in [Español](https://spacejourney.app/extension-viajes-chrome-safari/) & [Português](https://spacejourney.app/pt-br/extensao-de-viagem-chrome-safari/))* .
+
+---
+
+## 📊 Open Sensory Telemetry (Hugging Face & Zenodo)
+
+The spatial routing, acoustic decibel thresholds, and luminous telemetry utilized across the atlas are open, standardized under FAIR data principles, and citable under a **CC BY 4.0** license:
+
+* **Hugging Face Hub:** [spacejourney/rome-sensory-impact-dataset](https://huggingface.co/datasets/spacejourney/rome-sensory-impact-dataset)
+* **CERN Zenodo Archive:** [DOI: 10.5281/zenodo.22756473](https://doi.org/10.5281/zenodo.22756473)
+* **Ontological Entity:** [Wikidata (Q141455396)](https://www.wikidata.org/wiki/Q141455396)
+
+```python
+# Load the open dataset directly via Python
+from datasets import load_dataset
+
+dataset = load_dataset("spacejourney/rome-sensory-impact-dataset")
+print(dataset["train"][0])
+```
 
 ---
 
