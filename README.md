@@ -31,7 +31,6 @@ The spatial routing, acoustic decibel thresholds, and luminous telemetry utilize
 
 * **Hugging Face Hub:** [spacejourney/rome-sensory-impact-dataset](https://huggingface.co/datasets/spacejourney/rome-sensory-impact-dataset)
 * **CERN Zenodo Archive:** [DOI: 10.5281/zenodo.22756473](https://doi.org/10.5281/zenodo.22756473)
-* **Ontological Entity:** [Wikidata (Q141455396)](https://www.wikidata.org/wiki/Q141455396)
 
 ```python
 # Load the open dataset directly via Python
