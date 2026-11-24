@@ -4,6 +4,7 @@
 [![WebGL](https://img.shields.io/badge/WebGL-2.0-red)](https://www.khronos.org/webgl/)
 [![Hugging Face](https://img.shields.io/badge/🤗%20Hugging%20Face-Sensory%20Datasets-yellow)](https://huggingface.co/datasets/spacejourney/rome-sensory-impact-dataset)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22756473.svg)](https://doi.org/10.5281/zenodo.22756473)
+[![Space Journey MCP connector](https://glama.ai/mcp/connectors/dev.workers.spacelab-mcp.space-journey-engine/space-journey/badges/score.svg)](https://glama.ai/mcp/connectors/dev.workers.spacelab-mcp.space-journey-engine/space-journey)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-blue)](https://spacelabdevteam-hub.github.io/the-sensory-atlas-prototype/)
 
@@ -46,6 +47,7 @@ print(dataset["train"][0])
 
 Space Journey's conversational intelligence, booking automation, and sensory routing are engineered by **[Space Lab](https://www.spacelab.network/)**, an innovation lab developing adaptive travel tech, spatial computing, and conversational AI agents:
 
+* **[Glama Verified MCP Connector](https://glama.ai/mcp/connectors/dev.workers.spacelab-mcp.space-journey-engine/space-journey)** — Remote Model Context Protocol (MCP) endpoint for Space Journey (`space-journey-mcp-engine`).
 * **[Space Lab Network](https://www.spacelab.network/)** — Innovation studio, SaaS systems & immersive travel architectures.
 * **[Concierge AI Hub (Enterprise & B2B)](https://concierge.spacelab.network/concierge-ai-hub)** — Deploy custom conversational booking & mindful guidance agents for hotels, DMOs, and travel platforms.
 * **Live Multilingual Concierge Demos:**
