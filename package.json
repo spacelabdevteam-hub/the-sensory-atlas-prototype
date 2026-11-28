@@ -1,0 +1,27 @@
+{
+  "name": "the-sensory-atlas-prototype",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Modular Three.js r170 isometric 3D prototype visualizing Space Journey's open FAIR Sensory Impact Score (SIS) and ESA Copernicus DEM GLO-90 benchmarks.",
+  "scripts": {
+    "test": "node --test tests/verify_prototype.mjs"
+  },
+  "keywords": [
+    "threejs",
+    "webgl",
+    "isometric",
+    "solarpunk",
+    "sensory-impact-score",
+    "copernicus-dem",
+    "open-data",
+    "digital-heritage"
+  ],
+  "author": "Daniel Adolfo Duque Romero <spacelab.devteam@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://spacejourney.app/play/roma-atlas/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spacelabdevteam-hub/the-sensory-atlas-prototype.git"
+  }
+}
